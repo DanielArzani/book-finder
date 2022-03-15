@@ -1,6 +1,5 @@
 const { gql } = require("apollo-server-express");
 
-//TODO: USE INPUT TYPE TO HANDLE SAVEBOOK PARAMETERS AND ADD A BOOK AUTHOR'S ARRAY
 const typeDefs = gql`
   type User {
     _id: ID
@@ -25,6 +24,15 @@ const typeDefs = gql`
     user: User
   }
 
+  input savedBook {
+    description: String
+    title: String
+    bookId: String
+    image: String
+    link: String
+    authors: [String]
+  }
+
   type Query {
     me: User
   }
@@ -32,15 +40,8 @@ const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(
-      bookArray: [String]
-      description: String
-      title: String
-      bookId: ID
-      image: String
-      link: String
-    ): User
-    removeBook(bookId: String!): User
+    saveBook(input: savedBook!): User
+    removeBook(bookId: ID!): User
   }
 `;
 

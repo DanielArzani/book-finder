@@ -9,7 +9,7 @@ const resolvers = {
      *------------------------**/
     me: async (parent, args, context) => {
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user_id });
+        const userData = await User.findById(context.user._id);
 
         return userData;
       }
@@ -54,6 +54,42 @@ const resolvers = {
       // Sign token and return it to the client
       const token = signToken(user);
       return { token, user };
+    },
+
+    /**-------------------------
+     *         SAVE BOOK
+     *------------------------**/
+    saveBook: async (parent, { input }, { user }) => {
+      if (user) {
+        const userData = User.findByIdAndUpdate(
+          user._id,
+          { $push: { savedBooks: input } },
+          { new: true, runValidators: true }
+        );
+
+        return userData;
+      }
+
+      throw new AuthenticationError("You need to be logged in to save a book");
+    },
+
+    /**-------------------------
+     *       REMOVE BOOK
+     *------------------------**/
+    removeBook: async (parent, { bookId }, { user }) => {
+      if (user) {
+        const userData = User.findByIdAndUpdate(
+          user._id,
+          { $pull: { savedBooks: { bookId } } },
+          { new: true, runValidators: true }
+        );
+
+        return userData;
+      }
+
+      throw new AuthenticationError(
+        "You need to be logged in to remove a book"
+      );
     },
   },
 };

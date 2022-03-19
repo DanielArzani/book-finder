@@ -22,6 +22,7 @@ const startServer = async () => {
 };
 startServer();
 
+// This is extended true because we have an input type in /schema/typeDefs.js so the query string shouldn't be parsed into a flat data structure but a nested one
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

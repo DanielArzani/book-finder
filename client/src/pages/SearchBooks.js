@@ -70,7 +70,7 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    // console.log(bookToSave);
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -82,10 +82,11 @@ const SearchBooks = () => {
       // calling mutation function
       // const response = await saveBook(bookToSave, token);
       const { data: response } = await save_book({
-        variables: { ...bookToSave },
+        variables: { input: { ...bookToSave } },
       });
+      console.log(response);
 
-      if (!error) {
+      if (error) {
         throw new Error("something went wrong!");
       }
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 
-import { createUser } from "../utils/API";
 import { ADD_USER } from "../utils/mutations.js";
 import Auth from "../utils/auth";
 
@@ -36,7 +35,6 @@ const SignupForm = () => {
     }
 
     try {
-      // const response = await createUser(userFormData);
       const { data: response } = await add_user({
         variables: { ...userFormData },
       });
@@ -45,7 +43,6 @@ const SignupForm = () => {
         throw new Error("something went wrong!");
       }
 
-      // const { token, user } = await response.json();
       Auth.login(response.addUser.token);
     } catch (err) {
       console.error(err);

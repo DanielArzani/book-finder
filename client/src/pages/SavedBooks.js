@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Jumbotron,
   Container,
@@ -8,34 +8,20 @@ import {
 } from "react-bootstrap";
 import { useQuery, useMutation } from "@apollo/client";
 
-import { getMe, deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
 import { GET_ME } from "../utils/queries.js";
 import { REMOVE_BOOK } from "../utils/mutations.js";
 
 const SavedBooks = () => {
-  // const [userData, setUserData] = useState({});
-
   // useQuery hook
   const { data: userData, loading } = useQuery(GET_ME);
   // useMutation hook
   const [remove_book, { error }] = useMutation(REMOVE_BOOK);
-  // use this to determine if `useEffect()` hook needs to run again
-  // const userDataLength = Object.keys(userData).length;
 
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-  //     {me: {…}}
-  // me:
-  // bookCount: 0
-  // email: "night@gmail.com"
-  // savedBooks: []
-  // username: "night"
-  // __typename: "User"
-  // _id: "6236454e4ae17206d8e83695"
-  // console.log(userData);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -46,26 +32,21 @@ const SavedBooks = () => {
     }
 
     try {
-      // const response = await deleteBook(bookId, token);
+      /* eslint-disable no-unused-vars */
       const { data: response } = await remove_book({
         variables: { bookId },
       });
-      // console.log(response);
+      /* eslint-disable no-unused-vars */
 
       if (error) {
         throw new Error("something went wrong!");
       }
 
-      // const updatedUser = await response.json();
-      // setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
-      // console.log(bookId);
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
-  // console.log(userData.me.savedBooks);
 
   return (
     <>
@@ -84,7 +65,6 @@ const SavedBooks = () => {
         </h2>
         <CardColumns>
           {userData.me.savedBooks.map((book) => {
-            console.log(book);
             return (
               <Card key={book.bookId} border="dark">
                 {book.image ? (

@@ -79,6 +79,7 @@ const SearchBooks = () => {
 
     try {
       // calling mutation function
+      // eslint-disable-next-line
       const { data: response } = await save_book({
         variables: { input: { ...bookToSave } },
       });

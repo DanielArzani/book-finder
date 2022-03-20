@@ -32,11 +32,10 @@ const SavedBooks = () => {
     }
 
     try {
-      /* eslint-disable no-unused-vars */
+      // eslint-disable-next-line
       const { data: response } = await remove_book({
         variables: { bookId },
       });
-      /* eslint-disable no-unused-vars */
 
       if (error) {
         throw new Error("something went wrong!");
